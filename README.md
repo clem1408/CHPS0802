@@ -28,7 +28,7 @@ You will see (in the case of TP1) that two executables are created: one for the 
 
 To clean up the executables, you can run `make clean`.
 
-Note: Please note that I have added a bash script to run these programs more easily. Simply execute the following commands (from the root of the TP) depending on whether you want to run unitary tests or regular TP files:
+**Note: Please note that I have added a bash script to run these programs more easily. Simply execute the following commands (from the root of the TP) depending on whether you want to run unitary tests or regular TP files:**
 
 ```
 cd bash/
