@@ -2,7 +2,14 @@
 #include <helper_cuda.h>
 #include "../src/prac1b_impl.h"
 
-TEST(CudaTest, VectorAddition) {
+
+
+//
+// Unitary test for the addidion of 2 vectors
+//
+
+TEST(CudaTest, VectorAddition) 
+{
   float *h_v, *h_v2, *h_v3, *d_v, *d_v2, *d_v3;
   int   nblocks, nthreads, nsize, n;
 
@@ -24,7 +31,8 @@ TEST(CudaTest, VectorAddition) {
 
   // Mallocs gestion
 
-  if (h_v == NULL || h_v2 == NULL || h_v3 == NULL) {
+  if (h_v == NULL || h_v2 == NULL || h_v3 == NULL) 
+  {
     printf("Erreur d'allocation mémoire\n");
   }
 
@@ -80,7 +88,14 @@ TEST(CudaTest, VectorAddition) {
   cudaDeviceReset();
 }
 
-int main(int argc, char **argv) {
+
+
+//
+// Call of tests
+//
+
+int main(int argc, char **argv) 
+{
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

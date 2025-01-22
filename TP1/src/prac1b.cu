@@ -47,7 +47,8 @@ int main(int argc, const char **argv)
 
   // Mallocs gestion
 
-  if (h_x == NULL || h_v == NULL || h_v2 == NULL) {
+  if (h_x == NULL || h_v == NULL || h_v2 == NULL) 
+  {
     printf("Erreur d'allocation mémoire\n");
     return -1;
   }
