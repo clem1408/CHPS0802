@@ -1,0 +1,13 @@
+voidmainImage(outvec4fragColor,invec2fragCoord)
+{
+vec3color1=vec3(0.898,0.898,0.741);
+vec3color2=vec3(0.537,0.537,0.898);
+vec3pixel;
+floatlargeur=100.0;
+if(fragCoord.x>largeur){
+pixel=color2;
+}else{
+pixel=color1;
+}
+fragColor=vec4(pixel,1.0);
+}
