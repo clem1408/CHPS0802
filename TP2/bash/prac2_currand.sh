@@ -1,8 +1,20 @@
 #!/bin/bash
 
+# Enable automate interrupt in case of errors
+set -e
+
 # Variables
 BUILD_DIR="../build"
 EXECUTABLE_NAME="prac2_currand"
+
+# Verify build/ existency and create it if necessary
+if [ ! -d "$BUILD_DIR" ]; then
+    echo "Build directory not found! Creating it..."
+    mkdir -p "$BUILD_DIR"
+fi
+
+# Go in build/ folder
+cd "$BUILD_DIR"
 
 # Step 1: Run cmake
 echo "Running cmake..."
