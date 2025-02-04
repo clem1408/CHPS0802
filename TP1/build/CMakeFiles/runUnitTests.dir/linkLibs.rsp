@@ -1,1 +1,0 @@
- -lgtest -lgtest_main -lcudadevrt -lcudart_static -lrt -lpthread -ldl 
