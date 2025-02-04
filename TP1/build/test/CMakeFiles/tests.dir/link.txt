@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/tests.dir/tests.cu.o -o tests   -L/usr/lib/x86_64-linux-gnu/stubs  -L/usr/lib/gcc/x86_64-linux-gnu/12  /usr/lib/x86_64-linux-gnu/libgtest.a -lpthread -lcudadevrt -lcudart_static -lrt -lpthread -ldl 

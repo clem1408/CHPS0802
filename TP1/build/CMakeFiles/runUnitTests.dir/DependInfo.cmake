@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/clem/CHPS0802/TP1/src/prac1b_impl.cu" "CMakeFiles/runUnitTests.dir/src/prac1b_impl.cu.o" "gcc" "CMakeFiles/runUnitTests.dir/src/prac1b_impl.cu.o.d"
-  "/home/clem/CHPS0802/TP1/test/tests.cu" "CMakeFiles/runUnitTests.dir/test/tests.cu.o" "gcc" "CMakeFiles/runUnitTests.dir/test/tests.cu.o.d"
+  "/home/clem/M1/M1-S2/CHPS0802/TP1/src/prac1b_impl.cu" "CMakeFiles/runUnitTests.dir/src/prac1b_impl.cu.o" "gcc" "CMakeFiles/runUnitTests.dir/src/prac1b_impl.cu.o.d"
+  "/home/clem/M1/M1-S2/CHPS0802/TP1/test/tests.cu" "CMakeFiles/runUnitTests.dir/test/tests.cu.o" "gcc" "CMakeFiles/runUnitTests.dir/test/tests.cu.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
