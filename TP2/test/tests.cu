@@ -1,100 +1,49 @@
 #include <gtest/gtest.h>
 #include <helper_cuda.h>
-#include "../src/prac1b_impl.h"
-
-
+#include "../src/prac2_impl.h"
 
 //
-// Unitary test for the addidion of 2 vectors
+// Unitary test for a*z + b*z + c ~= a + c
 //
-
-TEST(CudaTest, VectorAddition) 
+TEST(CudaTest, ValueCloseness)
 {
-  float *h_v, *h_v2, *h_v3, *d_v, *d_v2, *d_v3;
-  int   nblocks, nthreads, nsize, n;
+    int nblocks = 256, nthreads = 256;
+    int nsize = nblocks * nthreads;
+    
+    int a = 1, b = 2, c = 3;  // Définition locale des constantes
 
-  // Set number of blocks, and threads per block
+    float *h_x = (float *)malloc(sizeof(float) * nsize);
+    float *d_x;
+    curandState *d_states;
 
-  nblocks  = 2;
-  nthreads = 8;
-  nsize    = nblocks*nthreads ;
+    checkCudaErrors(cudaMalloc((void **)&d_x, sizeof(float) * nsize));
+    checkCudaErrors(cudaMalloc((void **)&d_states, nsize * sizeof(curandState)));
 
-  // Allocations of the three vectors
+    // Lancer le kernel en passant `a`, `b`, `c` en arguments
+    generate_random<<<nblocks, nthreads>>>(d_states, d_x, time(NULL), a, b, c);
+    checkCudaErrors(cudaMemcpy(h_x, d_x, nsize * sizeof(float), cudaMemcpyDeviceToHost));
 
-  h_v = (float *)malloc(nsize*sizeof(float));
-  h_v2 = (float *)malloc(nsize*sizeof(float));
-  h_v3 = (float *)malloc(nsize*sizeof(float));
+    // Calcul de la moyenne de a*z² + b*z + c
+    float sum = 0.0f;
+    for (int i = 0; i < nsize; i++)
+        sum += h_x[i];
 
-  checkCudaErrors(cudaMalloc((void **)&d_v, nsize*sizeof(float)));
-  checkCudaErrors(cudaMalloc((void **)&d_v2, nsize*sizeof(float)));
-  checkCudaErrors(cudaMalloc((void **)&d_v3, nsize*sizeof(float)));
+    float mean_value = sum / nsize;
+    float expected_value = a + c;
 
-  // Mallocs gestion
+    // Vérification que la valeur moyenne est proche de a + c
+    EXPECT_NEAR(mean_value, expected_value, 0.1) << "La moyenne de a*z² + b*z + c est incorrecte !";
 
-  if (h_v == NULL || h_v2 == NULL || h_v3 == NULL) 
-  {
-    printf("Erreur d'allocation mémoire\n");
-  }
-
-  // Init of the two vectors
-
-  fill_vector_randomly(h_v, nsize);
-  fill_vector_randomly(h_v2, nsize);
-
-  // Addition of the two vectors on the cpu
-
-  printf("============================\n");
-
-  add_floats_vectors(h_v, h_v2, h_v3, nsize);
-
-  printf("============================\n");
-
-  // Meccopy of the two vectors
-
-  checkCudaErrors( cudaMemcpy(d_v,h_v,nsize*sizeof(float),
-                 cudaMemcpyHostToDevice) );
-  checkCudaErrors( cudaMemcpy(d_v2,h_v2,nsize*sizeof(float),
-                 cudaMemcpyHostToDevice) );
-
-  // Execute kernel
-
-  add_vectors_kernel<<<nblocks,nthreads>>>(d_v, d_v2, d_v3);
-  getLastCudaError("add_vectors_kernel execution failed\n");
-
-  // Copy back results and print them out
-
-  checkCudaErrors( cudaMemcpy(h_v3,d_v3,nsize*sizeof(float),
-               cudaMemcpyDeviceToHost) );
-
-  for (n=0; n<nsize; n++) printf("[DEVICE] Résultat : %f\n",h_v3[n]);
-
-  printf("============================\n");
-
-  for (n=0; n<nsize; n++) EXPECT_EQ(h_v3[n], h_v[n] + h_v2[n]);
-
-  printf("============================\n");
-
-  // Free memory
-
-  checkCudaErrors(cudaFree(d_v));
-  checkCudaErrors(cudaFree(d_v2));
-  checkCudaErrors(cudaFree(d_v3));
-  free(h_v);
-  free(h_v2);
-  free(h_v3);
-
-  // CUDA exit -- needed to flush printf write buffer
-
-  cudaDeviceReset();
+    free(h_x);
+    checkCudaErrors(cudaFree(d_x));
+    checkCudaErrors(cudaFree(d_states));
 }
-
 
 
 //
 // Call of tests
 //
-
-int main(int argc, char **argv) 
+int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

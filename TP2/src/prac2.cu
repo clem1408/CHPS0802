@@ -99,7 +99,7 @@ __global__ void generate_random(curandState *d_states, float *x, unsigned long s
 
 int main(int argc, const char **argv)
 {
-  int     NPATH=9600000, h_N=100, SIZE=200, nblocks, nthreads, nsize;
+  int     NPATH=9600000, h_N=100, nblocks, nthreads, nsize;
   float   h_T, h_r, h_sigma, h_rho, h_alpha, h_dt, h_con1, h_con2, h_result;
   float  *h_v, *h_x, *d_v, *d_z, *d_x;
   double  sum1, sum2;
@@ -240,7 +240,7 @@ int main(int argc, const char **argv)
 
   h_result = temporary_sum/nsize;
 
-  printf("Final result: %f\n", h_result);
+  printf("Final result: %f\n\n", h_result);
 
   // Tidy up library
 

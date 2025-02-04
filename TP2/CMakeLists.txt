@@ -14,9 +14,6 @@ set(CMAKE_BUILD_TYPE Release)
 # Set cuda architectures for my 3070 ti and my 4050
 set(CMAKE_CUDA_ARCHITECTURES 80)
 
-# Skip some warnings
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -w")
-
 # Include headers
 include_directories(include)
 
@@ -32,19 +29,26 @@ target_link_libraries(prac2 PRIVATE ${CUDA_LIBRARIES} curand)
 target_link_libraries(prac2_currand PRIVATE ${CUDA_LIBRARIES} curand)
 
 ################
-# Test unitaires
+#Unitary tests
 ###############
-#include(FetchContent)
+enable_testing()
 
-#FetchContent_Declare(
- #       googletest
-        # Specify the commit you depend on and update it regularly.
-  #      URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
-   #     DOWNLOAD_EXTRACT_TIMESTAMP true
-#)
+include(FetchContent)
 
-#add_executable(runUnitTests test/tests.cu src/prac1b_impl.cu)
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP true
+)
 
-#target_link_libraries(runUnitTests gtest gtest_main)
+# Un-comment if issues with GoogleTest
+#FetchContent_MakeAvailable(googletest)
 
-#add_test(NAME example_test COMMAND runUnitTests)
+# Creation of test executable
+#add_executable(runUnitTests test/tests.cu)
+
+# Link with GoogleTest
+#target_link_libraries(runUnitTests PRIVATE gtest gtest_main)
+
+# Adding the test(s) in CMake
+#add_test(NAME value_closeness COMMAND runUnitTests)
