@@ -106,19 +106,6 @@ int main(int argc, const char **argv)
   printf("\nAverage value and standard deviation of error  = %13.8f %13.8f\n\n",
 	 sum1/NPATH, sqrt((sum2/NPATH - (sum1/NPATH)*(sum1/NPATH))/NPATH) );
 
-  // Compute of data bandwith
-
-  double data_read = 2.0 * h_N * NPATH * sizeof(float) / 1e9; // in Go
-  double data_written = NPATH * sizeof(float) / 1e9; // in Go
-  double total_data = data_read + data_written;
-  double execution_time = milli / 1000.0; // conversion in Go
-  double bandwidth = total_data / execution_time; // Go/s
-
-  printf("Data read: %f GB\n", data_read);
-  printf("Data written: %f GB\n", data_written);
-  printf("Total data transferred: %f GB\n", total_data);
-  printf("Effective memory bandwidth: %f GB/s\n", bandwidth);
-
   printf("\n========================================================= \n\n");
 
   // Beginning of computation of the average value of az² + bz + c
@@ -175,6 +162,15 @@ int main(int argc, const char **argv)
   checkCudaErrors( cudaFree(d_v) );
   checkCudaErrors( cudaFree(d_z) );
   checkCudaErrors( cudaFree(d_x) );
+
+  printf("\n========================================================= \n\n");
+
+  // Calculate bandwidth
+  size_t bytes_transferred = (2 * h_N * NPATH * sizeof(float)) + (NPATH * sizeof(float));
+  float time_seconds = milli / 1000.0f;
+  float bandwidth_GBs = bytes_transferred / (time_seconds * 1e9);
+
+  printf("Effective bandwidth: %f GB/s\n", bandwidth_GBs);
 
   // CUDA exit -- needed to flush printf write buffer
 
