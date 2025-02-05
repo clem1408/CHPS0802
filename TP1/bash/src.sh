@@ -35,9 +35,4 @@ else
     exit 1
 fi
 
-# Step 4: Clean the build directory
-echo "Cleaning build directory..."
-make clean
-echo "Build directory cleaned successfully!"
-
 echo "Script finished successfully!"

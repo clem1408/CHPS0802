@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-
 #include <cuda.h>
 #include <curand_kernel.h>
-
 #include <helper_cuda.h>
+
+
 
 ////////////////////////////////////////////////////////////////////////
 // CUDA global constants
@@ -17,6 +17,7 @@
 
 __constant__ int   N;
 __constant__ float T, r, sigma, rho, alpha, dt, con1, con2;
+
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -51,7 +52,7 @@ __global__ void pathcalc(curandState *device_state, float *d_v,
       s2 = s2*(con1 + con2*y2);
     }
 
-    // put payoff value into device array
+    // Put payoff value into device array
 
     payoff = 0.0f;
     if ( fabs(s1-1.0f)<0.1f && fabs(s2-1.0f)<0.1f ) payoff = exp(-r*T);
@@ -60,6 +61,7 @@ __global__ void pathcalc(curandState *device_state, float *d_v,
     if (payoff_id < NPATH) d_v[payoff_id] = payoff;
   }
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -74,18 +76,18 @@ int main(int argc, const char **argv){
   double  sum1, sum2;
   curandState *state;
 
-  // initialise card
+  // Initialise card
 
   findCudaDevice(argc, argv);
 
-  // initialise CUDA timing
+  // Initialise CUDA timing
 
   float milli;
   cudaEvent_t start, stop;
   cudaEventCreate(&start);
   cudaEventCreate(&stop);
 
-  // allocate memory on host and device
+  // Allocate memory on host and device
 
   h_v = (float *)malloc(sizeof(float)*NPATH);
   checkCudaErrors( cudaMalloc((void **)&d_v, sizeof(float)*NPATH) );
@@ -93,7 +95,7 @@ int main(int argc, const char **argv){
 
   printf("size of curandState is %lu bytes\n",sizeof(curandState));
 
-  // define constants and transfer to GPU
+  // Define constants and transfer to GPU
 
   h_T     = 1.0f;
   h_r     = 0.05f;
@@ -114,7 +116,7 @@ int main(int argc, const char **argv){
   checkCudaErrors( cudaMemcpyToSymbol(con1, &h_con1, sizeof(h_con1)) );
   checkCudaErrors( cudaMemcpyToSymbol(con2, &h_con2, sizeof(h_con2)) );
 
-  // calculate theoretical occupancy -- see Pro Tip blog article:
+  // Calculate theoretical occupancy -- see Pro Tip blog article:
   // https://developer.nvidia.com/blog/cuda-pro-tip-occupancy-api-simplifies-launch-configuration/
 
   int device;
@@ -129,7 +131,7 @@ int main(int argc, const char **argv){
   printf("number of SMs      = %d \n",props.multiProcessorCount);
   int blocks = maxActiveBlocks*props.multiProcessorCount;
   
-  // execute kernels
+  // Execute kernels
 
   cudaEventRecord(start);
   RNG_init<<<blocks, 128>>>(state);
@@ -152,12 +154,12 @@ int main(int argc, const char **argv){
   getLastCudaError("pathcalc execution failed\n");
   printf("pathcalc kernel execution time (ms): %f \n",milli);
 
-  // copy back results
+  // Copy back results
 
   checkCudaErrors( cudaMemcpy(h_v, d_v, sizeof(float)*NPATH,
                    cudaMemcpyDeviceToHost) );
 
-  // compute average
+  // Compute average
 
   sum1 = 0.0;
   sum2 = 0.0;
@@ -177,5 +179,4 @@ int main(int argc, const char **argv){
   // CUDA exit -- needed to flush printf write buffer
 
   cudaDeviceReset();
-
 }

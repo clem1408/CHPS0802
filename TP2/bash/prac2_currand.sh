@@ -42,12 +42,4 @@ else
     exit 1
 fi
 
-# Step 4: Clean the build directory
-echo "Cleaning build directory..."
-make clean
-if [ $? -ne 0 ]; then
-    echo "Make clean failed!"
-    exit 1
-fi
-
 echo "Script finished successfully!"
