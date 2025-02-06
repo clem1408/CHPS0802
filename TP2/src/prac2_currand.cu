@@ -31,7 +31,6 @@ __global__ void RNG_init(curandState *state)
   curand_init(1234, id, 0, &state[id]);
 }
 
-
 __global__ void pathcalc(curandState *device_state, float *d_v,
                          int mpath, int NPATH)
 {
@@ -177,6 +176,15 @@ int main(int argc, const char **argv){
   checkCudaErrors( cudaFree(d_v) );
 
   // CUDA exit -- needed to flush printf write buffer
+
+  printf("\n========================================================= \n\n");
+
+  // Calculate bandwidth
+  size_t bytes_transferred = (2 * h_N * NPATH * sizeof(float)) + (NPATH * sizeof(float));
+  float time_seconds = milli / 1000.0f;
+  float bandwidth_GBs = bytes_transferred / (time_seconds * 1e9);
+
+  printf("Effective bandwidth: %f GB/s\n", bandwidth_GBs);
 
   cudaDeviceReset();
 }

@@ -1,8 +1,8 @@
 # CMake minimal requiered version
 cmake_minimum_required(VERSION 3.18)
 
-# TP2
-project(TP2 LANGUAGES CXX CUDA)
+# TP3
+project(TP3 LANGUAGES CXX CUDA)
 
 # Turn on warnings for the compilator
 set(CMAKE_CXX_STANDARD 17)
@@ -18,4 +18,4 @@ set(CMAKE_BUILD_TYPE Release)
 include_directories(include)
 
 add_subdirectory(src/)
-add_subdirectory(test/)
+#add_subdirectory(test/)

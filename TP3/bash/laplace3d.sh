@@ -5,7 +5,9 @@ set -e
 
 # Variables
 BUILD_DIR="../build"
-EXECUTABLE_NAME="runUnitTests"
+TEST_DIR="$BUILD_DIR/src"
+EXECUTABLE_NAME="laplace3d"
+EXECUTABLE_PATH="$TEST_DIR/$EXECUTABLE_NAME"
 
 # Verify build/ existency and create it if necessary
 if [ ! -d "$BUILD_DIR" ]; then
@@ -13,12 +15,17 @@ if [ ! -d "$BUILD_DIR" ]; then
     mkdir -p "$BUILD_DIR"
 fi
 
+# Verify build/test/ existency and create it if necessary
+if [ ! -d "$TEST_DIR" ]; then
+    echo "Test directory not found! Creating it..."
+    mkdir -p "$TEST_DIR"
+fi
+
 # Go in build/ folder
 cd "$BUILD_DIR"
 
 # Step 1: Run cmake
 echo "Running cmake..."
-cd "$BUILD_DIR" || { echo "Build directory not found!"; exit 1; }
 cmake ..
 if [ $? -ne 0 ]; then
     echo "CMake configuration failed!"
@@ -35,10 +42,10 @@ fi
 
 # Step 3: Run the executable
 echo "Running the executable..."
-if [ -f "./$EXECUTABLE_NAME" ]; then
-    ./"$EXECUTABLE_NAME"
+if [ -f "$EXECUTABLE_PATH" ]; then
+    "$EXECUTABLE_PATH"
 else
-    echo "Executable $EXECUTABLE_NAME not found!"
+    echo "Executable $EXECUTABLE_NAME not found in $TEST_DIR!"
     exit 1
 fi
 

@@ -6,7 +6,7 @@ set -e
 # Variables
 BUILD_DIR="../build"
 TEST_DIR="$BUILD_DIR/src"
-EXECUTABLE_NAME="prac2"
+EXECUTABLE_NAME="laplace3d_new"
 EXECUTABLE_PATH="$TEST_DIR/$EXECUTABLE_NAME"
 
 # Verify build/ existency and create it if necessary
