@@ -17,5 +17,5 @@ set(CMAKE_BUILD_TYPE Release)
 # Include headers
 include_directories(include)
 
-add_subdirectory(test/)
 add_subdirectory(src/)
+add_subdirectory(test/)

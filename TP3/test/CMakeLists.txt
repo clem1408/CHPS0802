@@ -14,8 +14,10 @@ FetchContent_Declare(
 # Un-comment if issues with GoogleTest
 #FetchContent_MakeAvailable(googletest)
 
+set(ALL tests.cu ../src/laplace3d_gold.cpp)
+
 # Creation of test executable
-add_executable(tests tests.cu)
+add_executable(tests ${ALL})
 
 # Link with GoogleTest
 target_link_libraries(tests PRIVATE gtest gtest_main)

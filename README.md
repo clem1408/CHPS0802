@@ -68,4 +68,3 @@ A unit test has been set up to verify that this value is close to `a + c` (`a = 
 
 ![image](https://github.com/user-attachments/assets/ac66d33f-8571-4381-8612-2c7d969139a5)
 ![image](https://github.com/user-attachments/assets/0aad7a49-1857-4287-bb2d-0ac3272a1eb8)
-
