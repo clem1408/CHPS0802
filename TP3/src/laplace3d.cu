@@ -16,8 +16,8 @@
 // define kernel block size
 ////////////////////////////////////////////////////////////////////////
 
-#define BLOCK_X 16
-#define BLOCK_Y 16
+#define BLOCK_X 32
+#define BLOCK_Y 32
 
 
 

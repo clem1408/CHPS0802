@@ -11,8 +11,8 @@
 // define kernel block size
 ////////////////////////////////////////////////////////////////////////
 
-#define BLOCK_X 16
-#define BLOCK_Y 16
+#define BLOCK_X 1
+#define BLOCK_Y 32
 
 
 
@@ -81,13 +81,13 @@ const char** g_argv;
 // Unitary test for a*z + b*z + c ~= a + c
 //
 
-TEST(CudaTest, ValueCloseness)
+TEST(CudaTest, equality)
 {
-    int       NX=1024, NY=1024, NZ=1024,
+    int       NX=512, NY=512, NZ=512,
             REPEAT=20, bx, by, i, j, k;
   float    *h_u1, *h_u2, *h_foo,
            *d_u1, *d_u2, *d_foo;
-  
+
   size_t    ind, bytes = sizeof(float) * NX*NY*NZ;
 
   printf("Grid dimensions: %d x %d x %d \n\n", NX, NY, NZ);
@@ -147,7 +147,7 @@ TEST(CudaTest, ValueCloseness)
   cudaEventSynchronize(stop);
   cudaEventElapsedTime(&milli, start, stop);
   printf("%dx Gold_laplace3d: %.1f (ms) \n\n", REPEAT, milli);
-  
+
   // Set up the execution configuration
 
   bx = 1 + (NX-1)/BLOCK_X;
@@ -197,7 +197,7 @@ TEST(CudaTest, ValueCloseness)
   }
 
   printf("rms error = %f \n",sqrt(err/ (float)(NX*NY*NZ)));
-    
+
   // Release GPU and CPU memory
 
   checkCudaErrors( cudaFree(d_u1) );

@@ -23,4 +23,4 @@ add_executable(tests ${ALL})
 target_link_libraries(tests PRIVATE gtest gtest_main)
 
 # Adding the test(s) in CMake
-add_test(NAME value_closeness COMMAND tests)
+add_test(NAME equality COMMAND tests)
