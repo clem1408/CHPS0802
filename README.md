@@ -68,3 +68,75 @@ A unit test has been set up to verify that this value is close to `a + c` (`a = 
 
 ![image](https://github.com/user-attachments/assets/ac66d33f-8571-4381-8612-2c7d969139a5)
 ![image](https://github.com/user-attachments/assets/0aad7a49-1857-4287-bb2d-0ac3272a1eb8)
+
+<hr>
+
+## TP3
+
+In this third TP, we learn more about block size and how it can help us optimize code.
+
+I have created a unit test to check that the GPU code and the Gold code produce the same output.
+
+Grid size (`512 * 512 * 512`):
+<br>
+![image](https://github.com/user-attachments/assets/c55d1a49-f7d6-403d-95cf-2c96bae99419)
+
+Grid size (`1024 * 1024 * 1024`):
+<br>
+![image](https://github.com/user-attachments/assets/06d5691e-361a-4acf-b49b-724dea4d7e1b)
+
+After testing multiple block dimensions for `laplace3d.cu`, I found that the optimal values for both x and y dimensions are 32, as shown in the table below.
+
+| x  | y  | Result (ms) |
+|----|----|------------|
+| 1  | 1  | 420.9      |
+| 1  | 2  | 258.8      |
+| 1  | 4  | 183.8      |
+| 1  | 8  | 181.6      |
+| 1  | 16 | 284.9      |
+| 1  | 32 | 404.0      |
+| 2  | 1  | 124.7      |
+| 4  | 1  | 124.4      |
+| 8  | 1  | 72.2       |
+| 16 | 1  | 42.5       |
+| 32 | 1  | 50.7       |
+| 2  | 2  | 154.2      |
+| 4  | 4  | 75.0       |
+| 8  | 8  | 60.3       |
+| 16 | 16 | 24.1       |
+| **32** | **32** | **23.8**       |
+
+After testing multiple block dimensions for `laplace3d_new.cu`, I found that the optimal values for x, y, and z dimensions are 16, 4, and 4, respectively, as shown in the table below.
+
+Note: These values were provided by the teacher.
+
+| x  | y  | z  | Result (ms) |
+|----|----|----|------------|
+| 1  | 1  | 1  | 2034.5     |
+| 2  | 1  | 1  | 1034.7     |
+| 1  | 2  | 1  | 1032.2     |
+| 1  | 1  | 2  | 1043.1     |
+| 2  | 2  | 2  | 305.1      |
+| 4  | 1  | 1  | 551.5      |
+| 1  | 4  | 1  | 566.0      |
+| 1  | 1  | 4  | 533.8      |
+| 4  | 4  | 4  | 58.7       |
+| 8  | 1  | 1  | 312.7      |
+| 1  | 8  | 1  | 293.0      |
+| 1  | 1  | 8  | 299.8      |
+| 8  | 8  | 8  | 40.6       |
+| 16 | 1  | 1  | 168.3      |
+| 1  | 16 | 1  | 172.9      |
+| 1  | 1  | 16 | 228.3      |
+| 16 | 2  | 2  | 53.4       |
+| 2  | 16 | 2  | 101.0      |
+| 2  | 2  | 16 | 101.6      |
+| **16** | **4**  | **4**  | **21.7**      |
+| 4  | 16 | 4  | 58.6       |
+| 4  | 4  | 16 | 60.9       |
+| 16 | 8  | 8  | 38.8       |
+| 8  | 16 | 8  | 44.9       |
+| 8  | 8  | 16 | 45.1       |
+| 32 | 1  | 1  | 91.7       |
+| 1  | 32 | 1  | 193.8      |
+| 1  | 1  | 32 | 603.8      |
