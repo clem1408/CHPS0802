@@ -140,3 +140,66 @@ Note: These values were provided by the teacher.
 | 32 | 1  | 1  | 91.7       |
 | 1  | 32 | 1  | 193.8      |
 | 1  | 1  | 32 | 603.8      |
+
+<hr>
+
+## TP4
+
+In this fourth TP, we learn more about reductions and how to implement them in several ways.
+
+I have created a unit test to check that the GPU reduction is correctly performed.
+
+![image](https://github.com/user-attachments/assets/7cd05b56-2dae-4998-abd8-9bc83bcd13f0)
+
+I added the small piece of code provided in the assignment to make the reduction work for a number of threads that is not a power of 2:
+
+```cpp
+////////////////////////////////////////////////////////////////////////
+// GPU routine
+////////////////////////////////////////////////////////////////////////
+
+__global__ void reduction(float *g_odata, float *g_idata, int blockSize)
+{
+    extern  __shared__  float temp[];
+
+    int tid = threadIdx.x;
+
+    // First, each thread loads data into shared memory
+
+    temp[tid] = g_idata[tid];
+
+    __syncthreads();
+
+    // Find first power of 2 less then blockSize
+
+    int m;
+    for (m = 1; m < blockSize; m *= 2);
+      m /= 2;
+
+    if (tid + m < blockSize) {
+        temp[tid] += temp[tid + m];
+    }
+
+    __syncthreads();
+
+    // Next, we perform binary tree reduction
+
+    for (int d = m / 2; d > 0; d /= 2) {
+        __syncthreads();
+        if (tid < d) {
+            temp[tid] += temp[tid + d];
+        }
+    }
+
+    // Finally, first thread puts result into global memory
+
+    if (tid == 0) {
+        g_odata[0] = temp[0];  
+    }
+}
+```
+
+Finally, I have implemented the two reduction methods mentioned in question 4, as well as the shuffle-based reduction, and measured their execution times.
+
+![image](https://github.com/user-attachments/assets/833c7603-8a42-427f-8e31-0e9d527f603b)
+
